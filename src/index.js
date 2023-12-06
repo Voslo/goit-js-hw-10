@@ -1,8 +1,6 @@
 import { fetchBreeds, fetchCatByBreed } from "./js/cat-api";
 
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import SlimSelect from 'slim-select'
-import 'slim-select/dist/slimselect.css';
 
 const select = document.querySelector('.breed-select');
 const loader = document.querySelector('.loader');
@@ -10,21 +8,25 @@ const errorMessage = document.querySelector('.error');
 const info = document.querySelector('.cat-info');
 function setLoadingState (isLoading) {
     loader.style.display = isLoading ? 'block' : 'none';
+    select.style.display = isLoading ? 'none' : 'block'
 };
 function setErrorState (hasError) {
     errorMessage.style.display = hasError ? 'block' : 'none';
+    select.style.display = hasError ? 'none' : 'block';
 };
 
-let arrBreedsId = [];
-
+const defaultOption = document.createElement('option');
+defaultOption.textContent = "Виберіть породу кота";
+defaultOption.value = "";
+select.appendChild(defaultOption);
+    
 fetchBreeds()
     .then(data => {
         data.forEach(breed => {
-            arrBreedsId.push({ text: breed.name, value: breed.id });
-        });
-        new SlimSelect({
-            select: select,
-            data: arrBreedsId,
+            const option = document.createElement('option');
+            option.value = breed.id;
+            option.textContent = breed.name;
+            select.appendChild(option)
         });
     })
     .catch(() => setErrorState(true))

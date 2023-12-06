@@ -22,7 +22,9 @@ width: 600px;
 .error{
 display: none;
 }
-
+.breed-select{
+    display: none;
+}
 .loader {
     width: 48px;
     height: 48px;
