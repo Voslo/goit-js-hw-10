@@ -7,7 +7,7 @@ export function fetchBreeds() {
                 throw new Error(response.status);
             }
             return response.json();
-        });
+        })
 };
 export function fetchCatByBreed(breedId) {
     return fetch(`${url}/images/search?api_key=${api_key}&breed_ids=${breedId}`)
@@ -16,5 +16,9 @@ export function fetchCatByBreed(breedId) {
                 throw new Error(response.status);
             }
             return response.json();
+        })
+        .catch(() => {
+            setErrorState(true);
+            setLoadingState(false);
         });
 };

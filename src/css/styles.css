@@ -12,15 +12,16 @@ p{
 }
 
 .box-img{
-display: flex;
-align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .box{
-width: 600px;
+    width: 600px;
 }
 .error{
-display: none;
+    display: none;
+    color: red;
 }
 .breed-select{
     display: none;

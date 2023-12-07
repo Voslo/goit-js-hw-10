@@ -8,7 +8,6 @@ const errorMessage = document.querySelector('.error');
 const info = document.querySelector('.cat-info');
 function setLoadingState (isLoading) {
     loader.style.display = isLoading ? 'block' : 'none';
-    select.style.display = isLoading ? 'none' : 'block'
 };
 function setErrorState (hasError) {
     errorMessage.style.display = hasError ? 'block' : 'none';
@@ -27,20 +26,25 @@ fetchBreeds()
             option.value = breed.id;
             option.textContent = breed.name;
             select.appendChild(option)
+            select.style.display = "block"; 
         });
     })
-    .catch(() => setErrorState(true))
-    .finally(() => setLoadingState(false))
+    .catch(() => {
+        setErrorState(true)
+        select.style.display = "none"; 
+    })
+    .finally(() => {
+        setLoadingState(false);
+    })
 
 select.addEventListener('change', onSelectBreed);
 function onSelectBreed(event) {
     setErrorState(false);
-    setLoadingState(false);
-
+    setLoadingState(true);
+    info.innerHTML = '';
     const breedId = event.target.value;
-    fetchCatByBreed(breedId)
+        fetchCatByBreed(breedId)
         .then(data => {
-            info.innerHTML = ''
             const { url, breeds } = data[0];
             const markup = `
         <div class="box-img">
@@ -54,7 +58,12 @@ function onSelectBreed(event) {
         </div>`
             info.insertAdjacentHTML('beforeend', markup);
         })
-        .catch(onFetchError);
+        .catch(onFetchError)
+            .finally(() => {
+                setLoadingState(false)
+                select.style.display = 'block';
+            })
+    
 }
 
 function onFetchError() {
